@@ -13,6 +13,7 @@ import { copy } from "./cli/files/copy.js";
 import { move } from "./cli/files/move.js";
 import { deleteFile } from "./cli/files/deleteFile.js";
 import { osFunc } from "./cli/os/os.js";
+import { calcHash } from "./cli/hash/hash.js";
 
 const userName = getUserName();
 process.chdir(os.homedir());
@@ -65,9 +66,12 @@ rl.on("line", async (data) => {
       case "os":
         await osFunc(args);
         break;
+      case "hash":
+        await calcHash(args);
+        break;
 
       default:
-        console.error("Invalid input", err);
+        console.error("Invalid input");
         break;
     }
   } catch (err) {
