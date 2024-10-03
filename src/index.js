@@ -14,6 +14,7 @@ import { move } from "./cli/files/move.js";
 import { deleteFile } from "./cli/files/deleteFile.js";
 import { osFunc } from "./cli/os/os.js";
 import { calcHash } from "./cli/hash/hash.js";
+import { compress, decompress } from "./cli/zip/zip.js";
 
 const userName = getUserName();
 process.chdir(os.homedir());
@@ -68,6 +69,12 @@ rl.on("line", async (data) => {
         break;
       case "hash":
         await calcHash(args);
+        break;
+      case "compress":
+        await compress(args);
+        break;
+      case "decompress":
+        await decompress(args);
         break;
 
       default:
