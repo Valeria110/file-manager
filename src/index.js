@@ -1,19 +1,16 @@
 import readline from "readline";
+import { getUserName } from "./utils/getUserName.js";
+import os from "os";
+import { greetUser } from "./utils/greetUser.js";
+import { printWorkingDir } from "./utils/printWorkingDir.js";
+import { up } from "./cli/up.js";
+import { cd } from "./cli/cd.js";
+import { ls } from "./cli/ls.js";
 
-const greetUser = () => {
-  const args = process.argv.slice(2);
-  const UserNameArg = args.find((arg) => arg.startsWith("--username"));
-  const userName = UserNameArg ? UserNameArg.split("=")[1] : "user";
-  console.log(`Welcome to the File Manager, ${userName}!`);
+const userName = getUserName();
+process.chdir(os.homedir());
 
-  printWorkingDir();
-};
-
-const printWorkingDir = () => {
-  console.log(`You are currently in ${process.cwd()}`);
-};
-
-greetUser();
+greetUser(userName);
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -26,9 +23,29 @@ rl.on("resume", () => {
 });
 rl.prompt();
 
-rl.on("line", (data) => {
-  console.log("Input: ", data);
+rl.on("line", async (data) => {
+  try {
+    const [operation, ...args] = data.trim().split(" ");
+
+    switch (operation) {
+      case "up":
+        up();
+        break;
+      case "cd":
+        await cd(args);
+        break;
+      case "ls":
+        await ls();
+        break;
+    }
+  } catch (err) {
+    console.error("Invalid input", err);
+  }
+
   printWorkingDir();
   rl.prompt();
 });
-rl.on("close", () => console.log("The programm was finished"));
+rl.on("close", () => {
+  console.log(`Thank you for using File Manager, ${userName}, goodbye!`);
+  process.exit();
+});
