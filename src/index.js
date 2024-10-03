@@ -12,6 +12,7 @@ import { rename } from "./cli/files/rename.js";
 import { copy } from "./cli/files/copy.js";
 import { move } from "./cli/files/move.js";
 import { deleteFile } from "./cli/files/deleteFile.js";
+import { osFunc } from "./cli/os/os.js";
 
 const userName = getUserName();
 process.chdir(os.homedir());
@@ -60,6 +61,9 @@ rl.on("line", async (data) => {
         break;
       case "rm":
         await deleteFile(args);
+        break;
+      case "os":
+        await osFunc(args);
         break;
 
       default:
