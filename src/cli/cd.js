@@ -1,13 +1,10 @@
 import path from "path";
 import fs from "fs/promises";
+import { processArgsToPath } from "../utils/processArgsToPath.js";
 
 const cd = async (args) => {
-  const newCWD = path.resolve(
-    process.cwd(),
-    `${args.length === 1 ? args[0] : args.join(" ")}`
-  );
-
   try {
+    const newCWD = path.resolve(process.cwd(), processArgsToPath(args));
     await fs.access(newCWD, fs.constants.R_OK);
     process.chdir(newCWD);
   } catch {
