@@ -27,9 +27,6 @@ const rl = readline.createInterface({
   prompt: "> ",
 });
 
-rl.on("resume", () => {
-  //some code
-});
 rl.prompt();
 
 rl.on("line", async (data) => {
@@ -76,18 +73,23 @@ rl.on("line", async (data) => {
       case "decompress":
         await decompress(args);
         break;
+      case ".exit":
+        console.log(`Thank you for using File Manager, ${userName}, goodbye!`);
+        process.exit();
+        break;
 
       default:
         console.error("Invalid input");
         break;
     }
-  } catch (err) {
-    console.error("Invalid input", err);
+  } catch {
+    console.error("Invalid input");
   }
 
   printWorkingDir();
   rl.prompt();
 });
+
 rl.on("close", () => {
   console.log(`Thank you for using File Manager, ${userName}, goodbye!`);
   process.exit();
